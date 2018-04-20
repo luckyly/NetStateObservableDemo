@@ -15,17 +15,17 @@ import java.util.Observer;
  */
 
 public class BaseActivity  extends Activity  implements Observer {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyApplication.getInstance().addObserver(this);
-        MyApplication.getInstance().registerReceiver();
+        NetStateObservable.getObservableInstance().addObserver(this);
+        NetStateReceiver.getInstance().registerReceiver();
     }
 
 
     @Override
     public void update(Observable o, Object arg) {
-        ToastUtil.showShortToast(this,"BaseActivity");
         int  netState= (int) arg;
 
         switch (netState){
@@ -50,10 +50,11 @@ public class BaseActivity  extends Activity  implements Observer {
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MyApplication.getInstance().removeObserver(this);
-        MyApplication.getInstance().unRegisterReceiver();
+        NetStateObservable.getObservableInstance().deleteObserver(this);
+        NetStateReceiver.getInstance().unRegisterReceiver();
     }
 }

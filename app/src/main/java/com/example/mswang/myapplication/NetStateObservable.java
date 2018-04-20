@@ -8,8 +8,19 @@ import java.util.Observable;
 
 public class NetStateObservable extends Observable {
 
-    @Override
-    protected synchronized void setChanged() {
-        super.setChanged();
+    private  static  NetStateObservable  observable;
+
+    private   NetStateObservable(){}
+
+    public  static NetStateObservable  getObservableInstance(){
+        if(observable==null){
+            observable=new NetStateObservable();
+        }
+        return observable;
+    }
+
+    public  void  notifyObserver(int   netState){
+        observable.setChanged();//必须调用
+        observable.notifyObservers(netState);
     }
 }
